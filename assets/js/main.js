@@ -4,8 +4,10 @@ var currentDate = moment().format("MMMM Do, YYYY");
 var containerEl = $("#container");
 
 currentDayEl.text(currentDate);
-var currentTime = moment().format('H');
+var currentTime = moment().format('H') - 3;
 console.log("current time=", currentTime);
+
+// create hour blocks
 
 for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     var rowEl = $("<div>");
@@ -13,7 +15,6 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     var col2El = $("<textarea>");
     var col3El = $("<button>");
     var btnIconEl = $("<i>");
-    //var textAreaEl = $("<textarea>");
 
     if (timeOfHour > 12){
         timeHour = timeOfHour - 12;
@@ -33,6 +34,8 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     col1El.text(timeHourString);
     col2El.addClass("col-md-10 text-center textarea");
     col2El.attr("id", "taskId-" + timeOfHour);
+ 
+    // color coding of hour blocks 
 
     if (timeOfHour < currentTime){
         col2El.addClass("past");
@@ -45,11 +48,12 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     }
 
     
-    //textAreaEl.addClass("textarea");
-    //col2El.append(textAreaEl);
     col3El.addClass("col-md-1 text-center saveBtn");
     col3El.attr("id", "BtnId-" + timeOfHour);
     btnIconEl.addClass("fas fa-save fa-2x");
+
+   // adding elements to DOM
+
     col3El.append(btnIconEl);
     rowEl.append(col1El);
     rowEl.append(col2El);
@@ -57,20 +61,10 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     containerEl.append(rowEl);
 };
 
-// $(col3El).click(function(target) {
-//     var 
-
-// })
-
 $(".saveBtn").on("click", function () {
-    let textareaInput = $(this).siblings(".textarea").val();
-    let time = $(this).siblings(".hour").attr("id");
-    console.log("time=", time)
-    localStorage.setItem(time, textareaInput);
+    var textareaInput = $(this).siblings(".textarea").val();
+    var timeId = $(this).siblings(".hour").attr("id");
+    localStorage.setItem(timeId, textareaInput);
   });
 
   //Get data from local storage
-$.each($("textarea"), function (index, value) {
-    let time = $(this).siblings(".hour").attr("id");
-    $(`#desc${index + 9}`).val(localStorage.getItem(time));
-  });
