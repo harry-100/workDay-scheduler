@@ -1,20 +1,20 @@
-var currentDayEl  = document.querySelector("#currentDay");
+
+var currentDayEl  = $("#currentDay");
 var currentDate = moment().format("MMMM Do, YYYY");
-var containerEl = document.querySelector("#container");
+var containerEl = $("#container");
 
-
-
-currentDayEl.textContent = currentDate;
+currentDayEl.text(currentDate);
 var currentTime = moment().format('H');
 console.log("current time=", currentTime);
 
-for (var i=0; i < 9; i++){
-    var rowEl = document.createElement("div");
-    var col1El = document.createElement("div");
-    var col2El = document.createElement("div");
-    var col3El = document.createElement("button");
-    var btnIconEl = document.createElement("i");
-    let timeOfHour = i + 9;
+for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
+    var rowEl = $("<div>");
+    var col1El = $("<div>");
+    var col2El = $("<div>");
+    var col3El = $("<button>");
+    var btnIconEl = $("<i>");
+    var textAreaEl = $("<textarea>");
+
     if (timeOfHour > 12){
         timeHour = timeOfHour - 12;
         timeHourString = timeHour + " PM";
@@ -26,27 +26,48 @@ for (var i=0; i < 9; i++){
         timeHourString = timeOfHour + " PM";
     }
 
-    rowEl.setAttribute("class", "row height: 100px");
-    rowEl.setAttribute("id", "id-" + i);
-    col1El.setAttribute("class", "col-md-1 text-center pt-3 hour");
-    col1El.textContent = timeHourString;
-    col2El.setAttribute("class", "col-md-10 text-center");
+    rowEl.addClass("row height: 100px");
+    rowEl.attr("id", "id-" + timeOfHour);
+    col1El.addClass("col-md-1 text-center pt-3 hour");
+    col1El.text(timeHourString);
+    col2El.addClass("col-md-10 text-center");
 
     if (timeOfHour < currentTime){
-        col2El.classList.add("past");
+        col2El.addClass("past");
     }
     else if (timeOfHour == currentTime) {
-        col2El.classList.add("present");
+        col2El.addClass("present");
     }
     else {
-        col2El.classList.add("future");
+        col2El.addClass("future");
     }
-    col3El.setAttribute("class", "col-md-1 text-center saveBtn");
-    btnIconEl.setAttribute("class", "fas fa-save fa-2x");
-    col3El.appendChild(btnIconEl);
-    rowEl.appendChild(col1El);
-    rowEl.appendChild(col2El);
-    rowEl.appendChild(col3El);
-    containerEl.appendChild(rowEl);
+
+    textAreaEl.attr("id", "taskId-" + timeOfHour);
+    textAreaEl.addClass("textarea");
+    col2El.append(textAreaEl);
+    col3El.addClass("col-md-1 text-center saveBtn");
+    col3El.attr("id", "BtnId-" + timeOfHour);
+    btnIconEl.addClass("fas fa-save fa-2x");
+    col3El.append(btnIconEl);
+    rowEl.append(col1El);
+    rowEl.append(col2El);
+    rowEl.append(col3El);
+    containerEl.append(rowEl);
 };
 
+// $(col3El).click(function(target) {
+//     var 
+
+// })
+
+$(".saveBtn").on("click", function () {
+    let textareaInput = $(this).siblings(".textarea").val();
+    let time = $(this).parent().attr("id");
+    localStorage.setItem(time, textareaInput);
+  });
+
+  //Get data from local storage
+$.each($("textarea"), function (index, value) {
+    let time = $(this).parent().attr("id");
+    $(`#desc${index + 9}`).val(localStorage.getItem(time));
+  });
