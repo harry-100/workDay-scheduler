@@ -10,10 +10,10 @@ console.log("current time=", currentTime);
 for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     var rowEl = $("<div>");
     var col1El = $("<div>");
-    var col2El = $("<div>");
+    var col2El = $("<textarea>");
     var col3El = $("<button>");
     var btnIconEl = $("<i>");
-    var textAreaEl = $("<textarea>");
+    //var textAreaEl = $("<textarea>");
 
     if (timeOfHour > 12){
         timeHour = timeOfHour - 12;
@@ -29,8 +29,10 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     rowEl.addClass("row height: 100px");
     rowEl.attr("id", "id-" + timeOfHour);
     col1El.addClass("col-md-1 text-center pt-3 hour");
+    col1El.attr("id", "id-" + timeOfHour);
     col1El.text(timeHourString);
-    col2El.addClass("col-md-10 text-center");
+    col2El.addClass("col-md-10 text-center textarea");
+    col2El.attr("id", "taskId-" + timeOfHour);
 
     if (timeOfHour < currentTime){
         col2El.addClass("past");
@@ -42,9 +44,9 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
         col2El.addClass("future");
     }
 
-    textAreaEl.attr("id", "taskId-" + timeOfHour);
-    textAreaEl.addClass("textarea");
-    col2El.append(textAreaEl);
+    
+    //textAreaEl.addClass("textarea");
+    //col2El.append(textAreaEl);
     col3El.addClass("col-md-1 text-center saveBtn");
     col3El.attr("id", "BtnId-" + timeOfHour);
     btnIconEl.addClass("fas fa-save fa-2x");
@@ -62,12 +64,13 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
 
 $(".saveBtn").on("click", function () {
     let textareaInput = $(this).siblings(".textarea").val();
-    let time = $(this).parent().attr("id");
+    let time = $(this).siblings(".hour").attr("id");
+    console.log("time=", time)
     localStorage.setItem(time, textareaInput);
   });
 
   //Get data from local storage
 $.each($("textarea"), function (index, value) {
-    let time = $(this).parent().attr("id");
+    let time = $(this).siblings(".hour").attr("id");
     $(`#desc${index + 9}`).val(localStorage.getItem(time));
   });
