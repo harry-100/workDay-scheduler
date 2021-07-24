@@ -4,7 +4,7 @@ var currentDate = moment().format("MMMM Do, YYYY");
 var containerEl = $("#container");
 
 currentDayEl.text(currentDate);
-var currentTime = moment().format('H') - 3;
+var currentTime = moment().format('H');
 console.log("current time=", currentTime);
 
 // create hour blocks
@@ -15,6 +15,14 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     var col2El = $("<textarea>");
     var col3El = $("<button>");
     var btnIconEl = $("<i>");
+
+    //Get data from local storage
+
+    var textItem = localStorage.getItem(timeOfHour);
+    if (textItem !== null) {
+        col2El.text(textItem);
+    }
+
 
     if (timeOfHour > 12){
         timeHour = timeOfHour - 12;
@@ -27,20 +35,19 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
         timeHourString = timeOfHour + " PM";
     }
 
-    rowEl.addClass("row height: 100px");
-    rowEl.attr("id", "id-" + timeOfHour);
+    rowEl.addClass("row");
     col1El.addClass("col-md-1 text-center pt-3 hour");
-    col1El.attr("id", "id-" + timeOfHour);
+    col1El.attr("id", timeOfHour);
     col1El.text(timeHourString);
     col2El.addClass("col-md-10 text-center textarea");
     col2El.attr("id", "taskId-" + timeOfHour);
  
     // color coding of hour blocks 
 
-    if (timeOfHour < currentTime){
+    if (timeOfHour < parseInt(currentTime)){
         col2El.addClass("past");
     }
-    else if (timeOfHour == currentTime) {
+    else if (timeOfHour === parseInt(currentTime)) {
         col2El.addClass("present");
     }
     else {
@@ -59,12 +66,15 @@ for (var timeOfHour=9; timeOfHour < 18; timeOfHour++){
     rowEl.append(col2El);
     rowEl.append(col3El);
     containerEl.append(rowEl);
+
 };
 
-$(".saveBtn").on("click", function () {
+// saving the data to local storage
+
+$(".saveBtn").on("click", function() {
     var textareaInput = $(this).siblings(".textarea").val();
     var timeId = $(this).siblings(".hour").attr("id");
     localStorage.setItem(timeId, textareaInput);
   });
 
-  //Get data from local storage
+  
