@@ -17,9 +17,9 @@
 
 ## ScreenShots
 
-![Image-1](./assets/screenShots/screenShot-1.png)
+![Image-1](./assets/ScreenShots/screenShot-1.png)
 
 
-![Image-2](./assets/screenShots/screenShot-2.png)
+![Image-2](./assets/ScreenShots/screenShot-2.png)
 
 
